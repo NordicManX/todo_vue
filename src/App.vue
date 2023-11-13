@@ -1,31 +1,34 @@
 <script setup>
 import { reactive } from 'vue';
 
-const estado = reactive ({
+const estado = reactive({
     filtro: 'todas',
     tarefaTemp: '',
     tarefas: [
         {
-            titulo: 'Estudar ES6',
+            titulo: 'Estudar Python',
             finalizada: false,
+
         },
         {
-            titulo: 'Estuda SASS',
+            titulo: 'Ir ao mercado as 15hrs',
             finalizada: false,
+
         },
         {
-            titulo: 'Ir caminhar',
+            titulo: 'Caminhar',
             finalizada: true,
+
         }
     ]
 })
 
 const getTarefasPendentes = () => {
-   return estado.tarefas.filter(tarefa => !tarefa.finalizada)
+    return estado.tarefas.filter(tarefa => !tarefa.finalizada)
 }
 
 const getTarefasFinalizadas = () => {
-   return estado.tarefas.filter(tarefa => tarefa.finalizada)
+    return estado.tarefas.filter(tarefa => tarefa.finalizada)
 }
 
 const getTarefasFiltradas = () => {
@@ -34,10 +37,10 @@ const getTarefasFiltradas = () => {
     switch (filtro) {
         case 'pendentes':
             return getTarefasPendentes();
-            case 'finalizadas':
-                return getTarefasFinalizadas();
-                default:
-                    return estado.tarefas;
+        case 'finalizadas':
+            return getTarefasFinalizadas();
+        default:
+            return estado.tarefas;
     }
 }
 
@@ -46,20 +49,21 @@ const cadastraTarefa = () => {
         titulo: estado.tarefaTemp,
         finalizada: false,
     }
-
     estado.tarefas.push(tarefaNova);
     estado.tarefaTemp = '';
 }
+
 </script>
 
 <template>
-<div class="container">
-    <header class="p-5 mb-4 mt4 bg-light rounded-3">
-        <h1>Minhas Tarefas</h1>
-        <p>
-            Você possui {{ getTarefasPendentes().length }} tarefas pendentes
-        </p>
-    </header>
+    <div class="container">
+        <header class="p-5 mb-4 mt-4 bg-light rounded-3">
+            <h1>Minhas Tarefas</h1>
+            <p>
+                Você possui {{ getTarefasPendentes().length }} tarefas
+            </p>
+        </header>
+    </div>
     <form @submit.prevent="cadastraTarefa">
         <div class="row">
             <div class="col">
@@ -79,18 +83,16 @@ const cadastraTarefa = () => {
     </form>
     <ul class="list-group mt-4">
         <li class="list-group-item" v-for="tarefa in getTarefasFiltradas()">
-            <input @change="evento => tarefa.finalizada = evento.target.checked" :checked="tarefa.finalizada" id="tarefa.titulo" type="checkbox">
+            <input @change="evento => tarefa.finalizada = evento.target.checked" :checked="tarefa.finalizada" :id="tarefa.titulo" type="checkbox">
             <label :class="{ done: tarefa.finalizada }" class="ms-3" :for="tarefa.titulo">
                 {{ tarefa.titulo }}
             </label>
         </li>
     </ul>
-</div>
 </template>
 
 <style scoped>
 .done {
     text-decoration: line-through;
 }
-
 </style>
